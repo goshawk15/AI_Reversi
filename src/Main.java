@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -9,7 +10,7 @@ public class Main {
         System.out.println("Play first?(y/n)");
         String ans1 = sc.next();
 
-        Game game = new Game(ans0,( (ans1 == "y") ? true : false));
+        Game game = new Game(ans0,(Objects.equals(ans1, "y")));
         game.printBoard();
     }
 }
