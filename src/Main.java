@@ -21,7 +21,7 @@ public class Main {
             else
                 curplayer = 'O';
             System.out.println("Its "+curplayer+"' turn");
-            
+
             System.out.println("Choose tile (i,j)");
             int i = sc.nextInt();
             int j = sc.nextInt();
