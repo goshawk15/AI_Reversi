@@ -11,6 +11,27 @@ public class Main {
         String ans1 = sc.next();
 
         Game game = new Game(ans0,(Objects.equals(ans1, "y")));
-        game.printBoard();
+
+        while(true) {
+            game.printBoard();
+            System.out.println("Choose tile (i,j)");
+            int i = sc.nextInt();
+            int j = sc.nextInt();
+            while(i<0||i>7||j<0||j>7){
+                System.out.println("Tile is out of bounds! Choose another tile");
+                i = sc.nextInt();
+                j = sc.nextInt();
+            }
+            while(game.board[i][j] != '-') {
+                System.out.println("Tile already captured! Choose another tile");
+                i = sc.nextInt();
+                j = sc.nextInt();
+            }
+            game.capture(i,j,game.player);
+            if(game.checkGame())
+                break;
+        }
+
+
     }
 }
