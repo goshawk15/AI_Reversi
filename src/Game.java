@@ -7,20 +7,27 @@ public class Game {
     Game(int maxD,boolean playerans){
         maxDepth = maxD;
         playerFirst = playerans;
-        if(playerans)
-            player = true;
-        else
-            player = false;
+
 
         for(int i = 0;i <8;i++) {
             for (int j = 0; j < 8; j++) {
                 board[i][j] = '#';
             }
         }
-        board[3][3] = 'X';
-        board[4][4] = 'X';
-        board[3][4] = 'O';
-        board[4][3] = 'O';
+        if(playerans) {
+            player = true;
+            board[3][3] = 'X';
+            board[4][4] = 'X';
+            board[3][4] = 'O';
+            board[4][3] = 'O';
+        }
+        else {
+            player = false;
+            board[3][3] = 'O';
+            board[4][4] = 'O';
+            board[3][4] = 'X';
+            board[4][3] = 'X';
+        }
     }
     void changeCurrentPlayer(){
         this.player = !this.player;

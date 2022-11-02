@@ -18,7 +18,7 @@ public class Main {
             if (game.player)
                 curplayer = 'X';
             else
-                curplayer = 'Y';
+                curplayer = 'O';
             System.out.println("Its "+curplayer+"' turn");
             System.out.println("Choose tile (i,j)");
             int i = sc.nextInt();
