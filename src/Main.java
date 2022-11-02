@@ -11,9 +11,15 @@ public class Main {
         String ans1 = sc.next();
 
         Game game = new Game(ans0,(Objects.equals(ans1, "y")));
+        char curplayer;
 
         while(true) {
-            game.printBoard();
+            game.printBoard(game.player);
+            if (game.player)
+                curplayer = 'X';
+            else
+                curplayer = 'Y';
+            System.out.println("Its "+curplayer+"' turn");
             System.out.println("Choose tile (i,j)");
             int i = sc.nextInt();
             int j = sc.nextInt();
@@ -22,12 +28,20 @@ public class Main {
                 i = sc.nextInt();
                 j = sc.nextInt();
             }
-            while(game.board[i][j] != '-') {
+            while(game.board[i][j] != '#') {
                 System.out.println("Tile already captured! Choose another tile");
                 i = sc.nextInt();
                 j = sc.nextInt();
             }
+
+            while(!game.validMove(i, j , game.player)) {
+                System.out.println("Invalid move try another");
+                i = sc.nextInt();
+                j = sc.nextInt();
+            }
             game.capture(i,j,game.player);
+            game.changeCurrentPlayer();
+
             if(game.checkGame())
                 break;
         }

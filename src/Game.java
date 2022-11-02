@@ -4,24 +4,33 @@ public class Game {
     boolean playerFirst;
     boolean player;
 
-    Game(int maxD,boolean playerF){
+    Game(int maxD,boolean playerans){
         maxDepth = maxD;
-        playerFirst = playerF;
-        if(playerF)
+        playerFirst = playerans;
+        if(playerans)
             player = true;
         else
             player = false;
 
         for(int i = 0;i <8;i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j] = '-';
+                board[i][j] = '#';
             }
         }
+        board[3][3] = 'X';
+        board[4][4] = 'X';
+        board[3][4] = 'O';
+        board[4][3] = 'O';
     }
     void changeCurrentPlayer(){
         this.player = !this.player;
     }
-    void printBoard(){
+    char getPiece(boolean player){
+        if(player)
+            return 'X';
+        return 'O';
+    }
+    void printBoard(boolean player){
         for(int i = 0;i <8;i++){
             for(int j = 0;j <8;j++){
                 System.out.print(board[i][j]+"  ");
@@ -29,20 +38,105 @@ public class Game {
             System.out.print("\n");
         }
     }
+
+    boolean checkFlip(int x, int y, int deltaX, int deltaY, char myPiece, char opponentPiece)
+    {
+        if(x == 8 || y == 8 || x == -1 || y == -1)
+            return false;
+        if (board[x][y] == opponentPiece)
+        {
+            while ((x > 0) && (x < 7) && (y > 0) && (y < 7))
+            {
+                x += deltaX;
+                y += deltaY;
+                if (this.board[x][y] == '#') // not consecutive
+                    return false;
+                if (this.board[x][y] == myPiece)
+                    return true; // At least one piece we can flip
+                else
+                {
+
+                }
+            }
+        }
+        return false; // Either no consecutive opponent pieces or hit the edge
+    }
+    void flipPieces(int x, int y, int deltaX, int deltaY, char myPiece, char opponentPiece)
+    {
+        while (this.board[x][y] == opponentPiece)
+        {
+            this.board[x][y] = myPiece;
+            x += deltaX;
+            y += deltaY;
+        }
+    }
+
     void capture(int i,int j,boolean player){
         if(player)
             this.board[i][j] = 'X';
         else
             this.board[i][j] = 'O';
-        changeCurrentPlayer();
+
+        if (checkFlip(i - 1, j, -1, 0, getPiece(player), getPiece(!player)))
+            flipPieces(i - 1, j, -1, 0, getPiece(player), getPiece(!player));
+
+        if (checkFlip(i + 1, j, 1, 0, getPiece(player), getPiece(!player)))
+            flipPieces(i + 1, j, 1, 0, getPiece(player), getPiece(!player));
+
+        if (checkFlip(i, j-1, 0, -1, getPiece(player), getPiece(!player)))
+            flipPieces(i, j-1, 0, -1, getPiece(player), getPiece(!player));
+
+        if (checkFlip(i, j+1, 0, 1, getPiece(player), getPiece(!player)))
+            flipPieces(i, j+1, 0, 1, getPiece(player), getPiece(!player));
+
+        if (checkFlip(i - 1, j-1, -1, -1, getPiece(player), getPiece(!player)))
+            flipPieces(i - 1, j-1, -1, -1, getPiece(player), getPiece(!player));
+
+        if (checkFlip(i + 1, j-1, 1, -1, getPiece(player), getPiece(!player)))
+            flipPieces(i + 1, j-1, 1, -1, getPiece(player), getPiece(!player));
+
+        if (checkFlip(i - 1, j+1, -1, 1, getPiece(player), getPiece(!player)))
+            flipPieces(i - 1, j+1, -1, 1, getPiece(player), getPiece(!player));
+
+        if (checkFlip(i + 1, j+1, 1, 1, getPiece(player), getPiece(!player)))
+            flipPieces(i + 1, j+1, 1, 1, getPiece(player), getPiece(!player));
+    }
+    boolean validMove(int i,int j,boolean player){
+
+        if (checkFlip(i - 1, j, -1, 0, getPiece(player), getPiece(!player)))
+            return true;
+
+        if (checkFlip(i + 1, j, 1, 0, getPiece(player), getPiece(!player)))
+            return true;
+
+        if (checkFlip(i, j-1, 0, -1, getPiece(player), getPiece(!player)))
+            return true;
+
+        if (checkFlip(i, j+1, 0, 1, getPiece(player), getPiece(!player)))
+            return true;
+
+        if (checkFlip(i - 1, j-1, -1, -1, getPiece(player), getPiece(!player)))
+            return true;
+
+        if (checkFlip(i + 1, j-1, 1, -1, getPiece(player), getPiece(!player)))
+            return true;
+
+        if (checkFlip(i - 1, j+1, -1, 1, getPiece(player), getPiece(!player)))
+            return true;
+
+        if (checkFlip(i + 1, j+1, 1, 1, getPiece(player), getPiece(!player)))
+            return true;
+
+        return false;
     }
     boolean checkGame(){
         for(int i = 0;i <8;i++) {
             for (int j = 0; j < 8; j++) {
-                if (this.board[i][j] == '-')
+                if (this.board[i][j] == '#')
                     return false;
             }
         }
         return true;
     }
+
 }
