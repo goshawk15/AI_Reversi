@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
+
         Scanner sc = new Scanner(System.in);
         System.out.println("Maximum depth?");
         int ans0 = sc.nextInt();
@@ -20,9 +21,11 @@ public class Main {
             else
                 curplayer = 'O';
             System.out.println("Its "+curplayer+"' turn");
+            
             System.out.println("Choose tile (i,j)");
             int i = sc.nextInt();
             int j = sc.nextInt();
+
             while(i<0||i>7||j<0||j>7){
                 System.out.println("Tile is out of bounds! Choose another tile");
                 i = sc.nextInt();
@@ -45,7 +48,5 @@ public class Main {
             if(game.checkGame())
                 break;
         }
-
-
     }
 }
