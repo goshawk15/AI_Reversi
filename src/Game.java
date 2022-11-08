@@ -29,6 +29,14 @@ public class Game {
             board[4][3] = 'X';
         }
     }
+    int getDisksbyChar(char x){
+        int count = 0;
+        for(int i = 0 ; i < 8 ; i++){
+            for(int j = 0 ; j < 8 ; j++){
+                if(this.board[i][j] == x)
+                    count++;}}
+        return count;
+    }
     void changeCurrentPlayer(){
         this.player = !this.player;
     }
@@ -46,8 +54,7 @@ public class Game {
         }
     }
 
-    boolean checkFlip(int x, int y, int deltaX, int deltaY, char myPiece, char opponentPiece)
-    {
+    boolean checkFlip(int x, int y, int deltaX, int deltaY, char myPiece, char opponentPiece){
         if(x == 8 || y == 8 || x == -1 || y == -1)
             return false;
         if (board[x][y] == opponentPiece)
@@ -68,8 +75,7 @@ public class Game {
         }
         return false; // Either no consecutive opponent pieces or hit the edge
     }
-    void flipPieces(int x, int y, int deltaX, int deltaY, char myPiece, char opponentPiece)
-    {
+    void flipPieces(int x, int y, int deltaX, int deltaY, char myPiece, char opponentPiece){
         while (this.board[x][y] == opponentPiece)
         {
             this.board[x][y] = myPiece;
@@ -136,6 +142,7 @@ public class Game {
 
         return false;
     }
+
     boolean checkGame(){
         for(int i = 0;i <8;i++) {
             for (int j = 0; j < 8; j++) {
