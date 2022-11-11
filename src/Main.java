@@ -8,6 +8,8 @@ public class Main {
         System.out.println("Maximum depth?");
         int ans0 = sc.nextInt();
 
+        Minimax minimax = new Minimax(ans0);
+
         System.out.println("Play first?(y/n)");
         String ans1 = sc.next();
 
