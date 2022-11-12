@@ -2,19 +2,18 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) throws CloneNotSupportedException{
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Maximum depth?");
         int ans0 = sc.nextInt();
-
-        Minimax minimax = new Minimax(ans0);
 
         System.out.println("Play first?(y/n)");
         String ans1 = sc.next();
 
         Game game = new Game(ans0,(Objects.equals(ans1, "y")));
         char curplayer;
+        Minimax minimax = new Minimax();
 
         while(true) {
             game.printBoard(game.player);
@@ -22,6 +21,7 @@ public class Main {
                 curplayer = 'X';
             else
                 curplayer = 'O';
+            if(curplayer == 'X'){
             System.out.println("Its "+curplayer+"' turn");
 
             System.out.println("Choose tile (i,j)");
@@ -45,10 +45,14 @@ public class Main {
                 j = sc.nextInt();
             }
             game.capture(i,j,game.player);
-            game.changeCurrentPlayer();
-
-            if(game.checkGame())
-                break;
         }
+        else{
+            minimax.run(game,ans0,game.player,game.player);
+        }
+        game.changeCurrentPlayer();
+        if(game.checkGame())
+                break;
+    }
+        sc.close();
     }
 }

@@ -1,4 +1,4 @@
-public class Game {
+public class Game implements Cloneable {
     char[][] board = new char[8][8];
     int maxDepth;
     boolean playerFirst;
@@ -152,5 +152,9 @@ public class Game {
         }
         return true;
     }
+    public Object clone()throws CloneNotSupportedException{  
+        return super.clone();  
+        }  
+
 
 }
