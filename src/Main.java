@@ -47,7 +47,7 @@ public class Main {
             game.capture(i,j,game.player);
         }
         else{
-            minimax.run(game,ans0,game.player,game.player);
+            minimax.run(game,ans0);
         }
         game.changeCurrentPlayer();
         if(game.checkGame())
