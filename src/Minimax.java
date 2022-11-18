@@ -2,21 +2,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Minimax{
-    char[][] copyBoard(char[][] board){
+public class Minimax {
+    char[][] copyBoard(char[][] board) {
         char[][] result = new char[8][8];
-        for(int i = 0;i < 8; i++){
-            result[i] = Arrays.copyOf(board[i],8);
+        for (int i = 0; i < 8; i++) {
+            result[i] = Arrays.copyOf(board[i], 8);
         }
         return result;
     }
-    
-    int run(Game g, int depth, boolean playerturn) throws CloneNotSupportedException{
+
+    int run(Game g, int depth, boolean playerturn) throws CloneNotSupportedException {
 
         List<Integer> Validi = new ArrayList<Integer>();
         List<Integer> Validj = new ArrayList<Integer>();
 
-        for(int i = 0; i< 8; i ++) {
+        for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (g.validMove(i, j, g.player)) {
                     Validi.add(i);
@@ -26,28 +26,20 @@ public class Minimax{
         }
         int available = Validi.size();
 
-        if(depth == 0)
-                return -1;
+        if (depth == 0)
+            return -1;
 
-        int MAX=Integer.MAX_VALUE;
-        int MIN=Integer.MIN_VALUE;
+        int MAX = Integer.MAX_VALUE;
+        int MIN = Integer.MIN_VALUE;
         Game temp = (Game) g.clone();
 
-        for(int i = 0; i < available;i++){
+        for (int i = 0; i < available; i++) {
             int x = Validi.get(i);
             int y = Validj.get(i);
-            if(playerturn){
-                temp.capture(x,y,playerturn);
-                int currentscore = run(temp,depth+1,!playerturn);
-                MAX = Math.max(currentscore,MAX);
-                if(currentscore >= 0)
-                    if(depth == 0)
-
-            }
 
         }
 
-        return bestMove;
-    }
+        return 0;
 
+    }
 }
