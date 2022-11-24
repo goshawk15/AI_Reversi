@@ -13,17 +13,20 @@ public class Main {
 
         Game game = new Game(ans0, (Objects.equals(ans1, "y")));
         char curplayer;
-        Minimax minimax = new Minimax();
+        Minimax minimax = new Minimax(ans0);
 
         while (true) {
-            game.printBoard(game.player);
+            DisplayTableau display = new DisplayTableau();
+            System.out.println(display.createTableau(game.board));
+
             if (game.player)
                 curplayer = 'X';
-            else
+            else {
                 curplayer = 'O';
-            if(curplayer == 'X' || curplayer == 'O'){
-            System.out.println("Its "+curplayer+"' turn");
+            }
+            System.out.println("Its " + curplayer + "' turn");
 
+            if(game.player) {
                 System.out.println("Choose tile (i,j)");
                 int i = sc.nextInt();
                 int j = sc.nextInt();
@@ -33,7 +36,7 @@ public class Main {
                     i = sc.nextInt();
                     j = sc.nextInt();
                 }
-                while (game.board[i][j] != '#') {
+                while (game.board[i][j] != '-') {
                     System.out.println("Tile already captured! Choose another tile");
                     i = sc.nextInt();
                     j = sc.nextInt();
@@ -44,12 +47,17 @@ public class Main {
                     i = sc.nextInt();
                     j = sc.nextInt();
                 }
-                game.capture(i, j, game.player);
-                game.changeCurrentPlayer();
-
-                if (game.checkGame())
-                    break;
+                game.capture(i, j, true);
             }
+            else{
+                Move move = minimax.run(game);
+                System.out.println("Computer plays: ("+move.getRow()+","+move.getCol()+")");
+                game.capture(move.getRow(),move.getCol(),false);
+            }
+            game.changeCurrentPlayer();
+
+            if (game.checkGame())
+                break;
         }
     }
 }

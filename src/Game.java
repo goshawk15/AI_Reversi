@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+
 public class Game implements Cloneable {
     char[][] board = new char[8][8];
     int maxDepth;
     boolean playerFirst;
     boolean player;
+    Move lastmove;
 
     Game(int maxD,boolean playerans){
         maxDepth = maxD;
@@ -10,7 +13,7 @@ public class Game implements Cloneable {
 
         for(int i = 0;i <8;i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j] = '#';
+                board[i][j] = '-';
             }
         }
         if(playerans) {
@@ -28,7 +31,25 @@ public class Game implements Cloneable {
             board[4][3] = 'X';
         }
     }
-    int getDisksbyChar(char x){
+    Game(Game game){
+        this.board = new char[8][8];
+        this.lastmove = game.lastmove;
+        this.player = game.player;
+        this.maxDepth = game.maxDepth;
+
+        for(int i = 0; i < this.board.length; i++)
+        {
+            for(int j = 0; j < this.board.length; j++)
+            {
+                this.board[i][j] = game.board[i][j];
+            }
+        }
+
+    }
+    int getDisksbyChar(boolean player){
+        char x = 'O';
+        if(player)
+            x = 'X';
         int count = 0;
         for(int i = 0 ; i < 8 ; i++){
             for(int j = 0 ; j < 8 ; j++){
@@ -44,15 +65,6 @@ public class Game implements Cloneable {
             return 'X';
         return 'O';
     }
-    void printBoard(boolean player){
-        for(int i = 0;i <8;i++){
-            for(int j = 0;j <8;j++){
-                System.out.print(board[i][j]+"  ");
-            }
-            System.out.print("\n");
-        }
-    }
-
     boolean checkFlip(int x, int y, int deltaX, int deltaY, char myPiece, char opponentPiece){
         if(x == 8 || y == 8 || x == -1 || y == -1)
             return false;
@@ -62,7 +74,7 @@ public class Game implements Cloneable {
             {
                 x += deltaX;
                 y += deltaY;
-                if (this.board[x][y] == '#') // not consecutive
+                if (this.board[x][y] == '-') // not consecutive
                     return false;
                 if (this.board[x][y] == myPiece)
                     return true; // At least one piece we can flip
@@ -84,6 +96,8 @@ public class Game implements Cloneable {
     }
 
     void capture(int i,int j,boolean player){
+        this.lastmove = new Move(i,j);
+
         if(player)
             this.board[i][j] = 'X';
         else
@@ -112,6 +126,7 @@ public class Game implements Cloneable {
 
         if (checkFlip(i + 1, j+1, 1, 1, getPiece(player), getPiece(!player)))
             flipPieces(i + 1, j+1, 1, 1, getPiece(player), getPiece(!player));
+
     }
     boolean validMove(int i,int j,boolean player){
 
@@ -145,15 +160,39 @@ public class Game implements Cloneable {
     boolean checkGame(){
         for(int i = 0;i <8;i++) {
             for (int j = 0; j < 8; j++) {
-                if (this.board[i][j] == '#')
+                if (this.board[i][j] == '-')
                     return false;
             }
         }
         return true;
     }
-    public Object clone()throws CloneNotSupportedException{  
-        return super.clone();  
+    int getValue(int x , int y , boolean p){
+        int before = this.getDisksbyChar(!p);
+        this.capture(x,y,p);
+        int after = this.getDisksbyChar(!p);
+
+        return before - after;
+    }
+    ArrayList<Game> getGames(boolean p){
+        this.player = p;
+        ArrayList<Game> games = new ArrayList<>();
+        for(int i = 0;i <8;i++) {
+            for (int j = 0; j < 8; j++) {
+                if (this.validMove(i, j, p) && this.board[i][j] == '-') {
+                    Game temp = new Game(this);
+                    temp.capture(i, j, p);
+                    games.add(temp);
+                }
+            }
         }
+        return games;
+    }
 
+    private void setPlayer(boolean p) {
+        this.player = p;
+    }
 
+    public Move getLastMove() {
+        return this.lastmove;
+    }
 }

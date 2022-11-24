@@ -1,45 +1,75 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Random;
 
 public class Minimax {
-    char[][] copyBoard(char[][] board) {
-        char[][] result = new char[8][8];
-        for (int i = 0; i < 8; i++) {
-            result[i] = Arrays.copyOf(board[i], 8);
-        }
-        return result;
+    int maxDepth;
+    Minimax(int d){
+        maxDepth = d;
+    }
+    Move run(Game game){
+        return min(new Game(game), 0);
     }
 
-    int run(Game g, int depth, boolean playerturn) throws CloneNotSupportedException {
+    Move max(Game game, int depth){
+        Random r = new Random();
 
-        List<Integer> Validi = new ArrayList<Integer>();
-        List<Integer> Validj = new ArrayList<Integer>();
+        if(game.checkGame() || depth == maxDepth){
+            return new Move(game.getLastMove().getRow(), game.getLastMove().getCol(), game.getValue(game.getLastMove().getRow(),game.getLastMove().getCol(),game.player));
+        }
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (g.validMove(i, j, g.player)) {
-                    Validi.add(i);
-                    Validj.add(j);
+        Move maxMove = new Move(Integer.MIN_VALUE);
+        ArrayList<Game> games = game.getGames(true);
+
+        for (Game temp: games) {
+            Move move = min(temp , depth + 1);
+            if(move.getValue() >= maxMove.getValue()){
+                if(move.getValue() == maxMove.getValue()){
+                    if(r.nextInt(2) == 0)
+                    {
+                        maxMove.setRow(temp.getLastMove().getRow());
+                        maxMove.setCol(temp.getLastMove().getCol());
+                        maxMove.setValue(move.getValue());
+                    }
+                }
+                else
+                {
+                    maxMove.setRow(temp.getLastMove().getRow());
+                    maxMove.setCol(temp.getLastMove().getCol());
+                    maxMove.setValue(move.getValue());
                 }
             }
         }
-        int available = Validi.size();
+        return maxMove;
+    }
 
-        if (depth == 0)
-            return -1;
+    Move min(Game game, int depth){
+        Random r = new Random();
 
-        int MAX = Integer.MAX_VALUE;
-        int MIN = Integer.MIN_VALUE;
-        Game temp = (Game) g.clone();
-
-        for (int i = 0; i < available; i++) {
-            int x = Validi.get(i);
-            int y = Validj.get(i);
-
+        if(game.checkGame() || depth == maxDepth){
+            return new Move(game.getLastMove().getRow(), game.getLastMove().getCol(), game.getValue(game.getLastMove().getRow(),game.getLastMove().getCol(),game.player));
         }
 
-        return 0;
+        Move minMove = new Move(Integer.MAX_VALUE);
+        ArrayList<Game> games = game.getGames(false);
 
+        for (Game temp: games) {
+            Move move = max(temp , depth + 1);
+
+            if(move.getValue() <= minMove.getValue()){
+                if(move.getValue() == minMove.getValue()){
+                    if(r.nextInt(2) == 0) {
+                        minMove.setRow(temp.getLastMove().getRow());
+                        minMove.setCol(temp.getLastMove().getCol());
+                        minMove.setValue(move.getValue());
+                    }
+                }
+                else {
+                    minMove.setRow(temp.getLastMove().getRow());
+                    minMove.setCol(temp.getLastMove().getCol());
+                    minMove.setValue(move.getValue());
+                }
+            }
+        }
+        return minMove;
     }
 }
