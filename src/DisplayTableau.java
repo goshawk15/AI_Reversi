@@ -1,5 +1,3 @@
-// Helper class for building and present the matrix of game on screen
-
 public class DisplayTableau
 {
     public String createTableau(char[][] grid)  // main function, returns tableau as string

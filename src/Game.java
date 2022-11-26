@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Game implements Cloneable {
+public class Game {
     char[][] board = new char[8][8];
     int maxDepth;
     boolean playerFirst;
@@ -47,9 +47,7 @@ public class Game implements Cloneable {
 
     }
     int getDisksbyChar(boolean player){
-        char x = 'O';
-        if(player)
-            x = 'X';
+        char x = getPiece(player);
         int count = 0;
         for(int i = 0 ; i < 8 ; i++){
             for(int j = 0 ; j < 8 ; j++){
@@ -94,7 +92,6 @@ public class Game implements Cloneable {
             y += deltaY;
         }
     }
-
     void capture(int i,int j,boolean player){
         this.lastmove = new Move(i,j);
 
@@ -129,7 +126,6 @@ public class Game implements Cloneable {
 
     }
     boolean validMove(int i,int j,boolean player){
-
         if (checkFlip(i - 1, j, -1, 0, getPiece(player), getPiece(!player)))
             return true;
 
@@ -156,7 +152,6 @@ public class Game implements Cloneable {
 
         return false;
     }
-
     boolean checkGame(){
         for(int i = 0;i <8;i++) {
             for (int j = 0; j < 8; j++) {
@@ -167,11 +162,26 @@ public class Game implements Cloneable {
         return true;
     }
     int getValue(int x , int y , boolean p){
-        int before = this.getDisksbyChar(!p);
-        this.capture(x,y,p);
-        int after = this.getDisksbyChar(!p);
-
-        return before - after;
+        int X = getDisksbyChar(true);
+        int O = getDisksbyChar(false);
+        int bonus = 10;
+        if(this.board[0][0] == 'X')
+            X += bonus;
+        if(this.board[0][7] == 'X')
+            X += bonus;
+        if(this.board[7][0] == 'X')
+            X += bonus;
+        if(this.board[7][7] == 'X')
+            X += bonus;
+        if(this.board[0][0] == 'O')
+            O += bonus;
+        if(this.board[0][7] == 'O')
+            O += bonus;
+        if(this.board[7][0] == 'O')
+            O += bonus;
+        if(this.board[7][7] == 'O')
+            O += bonus;
+        return O - X;
     }
     ArrayList<Game> getGames(boolean p){
         this.player = p;
@@ -187,11 +197,6 @@ public class Game implements Cloneable {
         }
         return games;
     }
-
-    private void setPlayer(boolean p) {
-        this.player = p;
-    }
-
     public Move getLastMove() {
         return this.lastmove;
     }

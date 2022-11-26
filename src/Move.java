@@ -10,8 +10,7 @@ public class Move {
         this.row = row;
         this.col = col;
     }
-    Move(int row, int col, int value)
-    {
+    Move(int row, int col, int value) {
         this.row = row;
         this.col = col;
         this.value = value;
