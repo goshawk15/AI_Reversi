@@ -14,7 +14,7 @@ public class Minimax {
         Random r = new Random();
 
         if(game.checkGame() || depth == maxDepth){
-            return new Move(game.getLastMove().getRow(), game.getLastMove().getCol(), game.getValue(game.getLastMove().getRow(),game.getLastMove().getCol(),game.player));
+            return new Move(game.getLastMove().getRow(), game.getLastMove().getCol(), game.getValue());
         }
 
         Move maxMove = new Move(Integer.MIN_VALUE);
@@ -46,7 +46,7 @@ public class Minimax {
         Random r = new Random();
 
         if(game.checkGame() || depth == maxDepth){
-            return new Move(game.getLastMove().getRow(), game.getLastMove().getCol(), game.getValue(game.getLastMove().getRow(),game.getLastMove().getCol(),game.player));
+            return new Move(game.getLastMove().getRow(), game.getLastMove().getCol(), game.getValue());
         }
 
         Move minMove = new Move(Integer.MAX_VALUE);

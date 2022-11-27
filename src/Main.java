@@ -4,18 +4,24 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args){
 
+        //User input of the maximum depth to be used in the minimax function
         Scanner sc = new Scanner(System.in);
         System.out.println("Maximum depth?");
         int ans0 = sc.nextInt();
 
+        //User input of who will start first
         System.out.println("Play first?(y/n)");
         String ans1 = sc.next();
 
+        //game object creation
         Game game = new Game(ans0, (Objects.equals(ans1, "y")));
         char curplayer;
+
+        //minimax object creation
         Minimax minimax = new Minimax(ans0);
 
-        while (true) {
+        //while the game ending conditions are not true the game continues
+        while (!game.checkGame()) {
             DisplayTableau display = new DisplayTableau();
             System.out.println(display.createTableau(game.board));
 
@@ -41,7 +47,6 @@ public class Main {
                     i = sc.nextInt();
                     j = sc.nextInt();
                 }
-
                 while (!game.validMove(i, j, game.player)) {
                     System.out.println("Invalid move try another");
                     i = sc.nextInt();
@@ -56,8 +61,15 @@ public class Main {
             }
             game.changeCurrentPlayer();
 
-            if (game.checkGame())
-                break;
         }
+
+        //endgame
+        int Xdisks = game.getDisksbyChar(true);
+        int Odisks = game.getDisksbyChar(false);
+        int result = Xdisks - Odisks;
+        if(result > 0)
+            System.out.println("Player wins! with score: "+Xdisks+"-"+Odisks);
+        else
+            System.out.println("PC wins! with score: "+Odisks+"-"+Xdisks);
     }
 }
