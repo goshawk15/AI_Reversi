@@ -4,13 +4,15 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args){
 
+        System.out.println("Reversi game on 8x8 tableau.\n");
+        System.out.println("Player 'O' is computer, player 'X' is you");
         //User input of the maximum depth to be used in the minimax function
         Scanner sc = new Scanner(System.in);
-        System.out.println("Maximum depth?");
+        System.out.println("Enter an integer representing the depth of the  searching tree.");
         int ans0 = sc.nextInt();
 
         //User input of who will start first
-        System.out.println("Play first?(y/n)");
+        System.out.println("Play first? Enter 'y' for yes or 'n' for no");
         String ans1 = sc.next();
 
         //game object creation
@@ -20,6 +22,7 @@ public class Main {
         //minimax object creation
         Minimax minimax = new Minimax(ans0);
 
+        System.out.println("This is starting game arrangement:");
         //while the game ending conditions are not true the game continues
         while (!game.checkGame()) {
             DisplayTableau display = new DisplayTableau();

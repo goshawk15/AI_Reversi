@@ -179,7 +179,7 @@ public class Game {
         return true;
     }
 
-    //heuristic method that returns t
+    //heuristic function for the number of occupied corners
     int getCorners(){
         int XCorners = 0;
         int OCorners = 0;
@@ -206,6 +206,7 @@ public class Game {
             return 100 * (OCorners - XCorners) / (OCorners + XCorners);
 
     }
+    // heuristic function for the mobility relation between the two opponents
     int getMobility() {
         int Xmobility = 0;
         int Omobility = 0;
@@ -223,11 +224,13 @@ public class Game {
             return 100 * (Omobility - Xmobility) / (Omobility + Xmobility);
 
     }
+    // heuristic function for the numerical relation in the checkers of the two opponents
     int getParity(){
         int Xdisks = getDisksbyChar(true);
         int Odisks =getDisksbyChar(false);
         return 100 * (Odisks - Xdisks) / (Odisks + Xdisks);
     }
+    // utility function
     int getValue(){
         return getCorners() + getMobility() + getParity();
     }
