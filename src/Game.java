@@ -168,8 +168,8 @@ public class Game {
     boolean checkGame(){
         int x = getDisksbyChar(true);
         int y = getDisksbyChar(false);
-        if(x+y != 64)
-            return false;
+        if(x+y == 64)
+            return true;
 
         for(int i = 0; i < 8 ; i++)
             for(int j = 0 ; j< 8 ; j++)
